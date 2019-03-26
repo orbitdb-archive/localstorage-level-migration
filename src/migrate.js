@@ -2,59 +2,61 @@
 
 const levelup = require('levelup')
 
-module.exports = (level, LocalStorage, mkdir) => {
-    return {
-        migrateKeys: async (sourcePath, existingId, options = {}) => {
-            if (!sourcePath) {
-                throw new Error('path to keystore required')
-            }
-            if (!existingId) {
-                throw new Error('key id required')
-            }
+const migrate = (source, level, LocalStorage, mkdir) => async (options = {}) => {
+  if (!source) {
+      throw new Error('path to keys required')
+  }
+  const len = source.split('/').length
+  const existingId = source.split('/')[len-1]
+  const sourcePath = source.split('/').splice(0, len-1).join('/')
+  if (!existingId) {
+      throw new Error('key id required')
+  }
 
-            const target = options.targetPath ? options.targetPath : sourcePath
+  const target = options.targetPath ? options.targetPath : sourcePath
 
-            if (mkdir && mkdir.sync){
-                mkdir.sync(sourcePath)
-                mkdir.sync(target)
-            }
+  if (mkdir && mkdir.sync){
+      mkdir.sync(sourcePath)
+      mkdir.sync(target)
+  }
 
-            const storage = LocalStorage ? new LocalStorage(sourcePath) : localStorage
-            const keys = JSON.parse(storage.getItem(existingId))
-            if (!keys) {
-                throw new Error(`No keys with id ${existingId} found`)
-            }
+  const storage = LocalStorage ? new LocalStorage(sourcePath) : localStorage
+  const keys = JSON.parse(storage.getItem(existingId))
+  if (!keys) {
+      throw new Error(`No keys with id ${existingId} found`)
+  }
 
-            const key = {
-                publicKey: keys.publicKey,
-                privateKey: keys.privateKey
-            }
+  const key = {
+      publicKey: keys.publicKey,
+      privateKey: keys.privateKey
+  }
 
-            const open = (dir) => new Promise((resolve, reject) => {
-                const store = levelup(level(dir))
-                store.open((err) => {
-                    if (err) {
-                        reject(err)
-                    }
-                    resolve(store)
-                })
-            })
+  const open = (dir) => new Promise((resolve, reject) => {
+      const store = levelup(level(dir))
+      store.open((err) => {
+          if (err) {
+              reject(err)
+          }
+          resolve(store)
+      })
+  })
 
-            const targetId = options.targetId ? options.targetId : existingId
+  const targetId = options.targetId ? options.targetId : existingId
 
-            const levelStore = await open(target)
-            await levelStore.put(targetId, JSON.stringify(key))
+  const levelStore = await open(target)
+  await levelStore.put(targetId, JSON.stringify(key))
 
-            const close = (store) => new Promise((resolve, reject) => {
-                store.close((err) => {
-                    if (err) {
-                        reject(err)
-                    }
-                    store = null
-                    resolve()
-                })
-            })
-            await close(levelStore)
-        }
-    }
+  const close = (store) => new Promise((resolve, reject) => {
+      store.close((err) => {
+          if (err) {
+              reject(err)
+          }
+          store = null
+          resolve()
+      })
+  })
+
+  await close(levelStore)
 }
+
+module.exports = (level, LocalStorage, mkdir) => (source) => migrate(source, level, LocalStorage, mkdir)
