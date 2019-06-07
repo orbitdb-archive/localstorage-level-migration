@@ -1,14 +1,14 @@
 {
   "name": "localstorage-level-migration",
   "version": "0.0.1",
-  "description": "",
+  "description": "Move items from localstorage to leveldb",
   "browser": "index-browser.js",
   "main": "index-nodejs.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["localstorage", "level"],
+  "author": "shamb0t",
   "license": "MIT",
   "dependencies": {
     "level": "^4.0.0",
