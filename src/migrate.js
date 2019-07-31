@@ -13,11 +13,10 @@ const migrate = (source, level, LocalStorage, mkdir) => async (options = {}) => 
       throw new Error('key id required')
   }
 
-  const target = options.targetPath ? options.targetPath : sourcePath
+  const target = options.targetStore ? options.targetStore : sourcePath
 
   if (mkdir && mkdir.sync){
       mkdir.sync(sourcePath)
-      mkdir.sync(target)
   }
 
   const storage = LocalStorage ? new LocalStorage(sourcePath) : localStorage
@@ -43,20 +42,8 @@ const migrate = (source, level, LocalStorage, mkdir) => async (options = {}) => 
 
   const targetId = options.targetId ? options.targetId : existingId
 
-  const levelStore = await open(target)
+  const levelStore = options.targetStore
   await levelStore.put(targetId, JSON.stringify(key))
-
-  const close = (store) => new Promise((resolve, reject) => {
-      store.close((err) => {
-          if (err) {
-              reject(err)
-          }
-          store = null
-          resolve()
-      })
-  })
-
-  await close(levelStore)
 }
 
 module.exports = (level, LocalStorage, mkdir) => (source) => migrate(source, level, LocalStorage, mkdir)
