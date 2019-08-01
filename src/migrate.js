@@ -44,6 +44,18 @@ const migrate = (source, level, LocalStorage, mkdir) => async (options = {}) => 
 
   const levelStore = options.targetStore
   await levelStore.put(targetId, JSON.stringify(key))
+
+  const close = (store) => new Promise((resolve, reject) => {
+      store.close((err) => {
+          if (err) {
+              reject(err)
+          }
+          store = null
+          resolve()
+      })
+  })
+
+   await close(levelStore)
 }
 
 module.exports = (level, LocalStorage, mkdir) => (source) => migrate(source, level, LocalStorage, mkdir)
