@@ -1,6 +1,6 @@
 {
   "name": "localstorage-level-migration",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Move items from localstorage to leveldb",
   "repository": "https://github.com/orbitdb/localstorage-level-migration",
   "homepage": "https://github.com/orbitdb/localstorage-level-migration#README.md",
