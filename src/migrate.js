@@ -1,14 +1,15 @@
 'use strict'
 
 const levelup = require('levelup')
-
-const migrate = (source, level, LocalStorage, mkdir) => async (options = {}) => {
+const path = require('path')
+const migrate = (aSource, level, LocalStorage, mkdir) => async (options = {}) => {
+  const source = aSource.replace(/\\/g, '/')
   if (!source) {
       throw new Error('path to keys required')
   }
   const len = source.split('/').length
   const existingId = source.split('/')[len-1]
-  const sourcePath = source.split('/').splice(0, len-1).join('/')
+  const sourcePath = source.split('/').splice(0, len-1).join(path.sep)
   if (!existingId) {
       throw new Error('key id required')
   }
