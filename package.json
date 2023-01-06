@@ -39,7 +39,7 @@
   "devDependencies": {
     "assert": "^2.0.0",
     "mocha": "^10.2.0",
-    "orbit-db-keystore": "github:haydenyoung/orbit-db-keystore#esm",
+    "orbit-db-keystore": "github:orbitdb/orbit-db-keystore#esm",
     "path": "^0.12.7",
     "rimraf": "^3.0.2",
     "standard": "^17.0.0"
