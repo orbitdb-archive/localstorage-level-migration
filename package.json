@@ -5,10 +5,13 @@
   "repository": "https://github.com/orbitdb/localstorage-level-migration",
   "homepage": "https://github.com/orbitdb/localstorage-level-migration#README.md",
   "bugs": "https://github.com/orbitdb/localstorage-level-migration/issues",
-  "browser": "index-browser.js",
-  "main": "index-nodejs.js",
+  "browser": "src/index-browser.js",
+  "main": "src/index-nodejs.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "lint": "standard",
+    "lint:fix": "standard --fix"
   },
   "keywords": [
     "localstorage",
@@ -16,14 +19,30 @@
   ],
   "author": "shamb0t",
   "license": "MIT",
+  "standard": {
+    "env": [
+      "mocha"
+    ]
+  },
   "dependencies": {
-    "level": "^5.0.0",
-    "mkdirp": "^0.5.1",
+    "level": "^8.0.0",
+    "level-js": "^6.1.0",
+    "leveldown": "^6.1.1",
+    "levelup": "^5.1.1",
+    "mkdirp": "^1.0.4",
     "node-localstorage": "^1.3.1"
   },
   "localMaintainers": [
     "haad <haad@haja.io>",
     "shamb0t <shams@haja.io>",
     "hajamark <mark@haja.io>"
-  ]
+  ],
+  "devDependencies": {
+    "assert": "^2.0.0",
+    "mocha": "^10.2.0",
+    "orbit-db-keystore": "^1.0.1-ae215fb.0",
+    "path": "^0.12.7",
+    "rimraf": "^3.0.2",
+    "standard": "^17.0.0"
+  }
 }
