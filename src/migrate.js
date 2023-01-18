@@ -1,5 +1,3 @@
-import levelup from 'levelup'
-
 const migrate = (source, level, LocalStorage, mkdir) => async (options = {}) => {
   if (!source) {
     throw new Error('path to keys required')
