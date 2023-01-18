@@ -1,6 +1,6 @@
 {
   "name": "localstorage-level-migration",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Move items from localstorage to leveldb",
   "repository": "https://github.com/orbitdb/localstorage-level-migration",
   "homepage": "https://github.com/orbitdb/localstorage-level-migration#README.md",
@@ -40,7 +40,7 @@
   "devDependencies": {
     "assert": "^2.0.0",
     "mocha": "^10.2.0",
-    "orbit-db-keystore": "^1.0.1-ae215fb.0",
+    "orbit-db-keystore": "^2.0.0",
     "path": "^0.12.7",
     "rimraf": "^3.0.2",
     "standard": "^17.0.0"
