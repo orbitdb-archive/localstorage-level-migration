@@ -15,6 +15,7 @@ const migrate = (source, level, LocalStorage, mkdir) => async (options = {}) => 
     mkdir.sync(sourcePath)
   }
 
+  /* eslint-disable-next-line no-undef */
   const storage = LocalStorage ? new LocalStorage(sourcePath) : localStorage
   const keys = JSON.parse(storage.getItem(existingId))
   if (!keys) {
@@ -25,16 +26,6 @@ const migrate = (source, level, LocalStorage, mkdir) => async (options = {}) => 
     publicKey: keys.publicKey,
     privateKey: keys.privateKey
   }
-
-  const open = (dir) => new Promise((resolve, reject) => {
-    const store = levelup(level(dir))
-    store.open((err) => {
-      if (err) {
-        reject(err)
-      }
-      resolve(store)
-    })
-  })
 
   const targetId = options.targetId ? options.targetId : existingId
 
